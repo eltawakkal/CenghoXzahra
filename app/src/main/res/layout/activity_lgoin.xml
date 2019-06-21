@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_view_login"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+    <ImageView
+        android:src="@drawable/user_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"/>
+
+    <TextView
+        android:text="Email Akhi"
+        android:textSize="16sp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edt_email_login"
+        android:hint="fulan@setorann.com"
+        android:lines="1"
+        android:inputType="textEmailAddress"
+        style="@style/EditTextMain"
+        android:drawableRight="@drawable/ic_email_gray_24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="Sandi Akhi"
+        android:textSize="16sp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edt_pass_loginn"
+        android:hint="*******"
+        android:lines="1"
+        android:inputType="textPassword"
+        style="@style/EditTextMain"
+        android:drawableRight="@drawable/ic_vpn_key_grey_24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mbt_login"
+        android:text="Masuk"
+        app:icon="@drawable/ic_check_gray_24dp"
+        android:layout_marginTop="20dp"
+        app:cornerRadius="20dp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_guest_login"
+        android:text="Atau Klik Disini Untuk Masuk Sebagai Tamu"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

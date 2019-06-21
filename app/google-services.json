@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "241082385996",
+    "firebase_url": "https://setoranhafalan.firebaseio.com",
+    "project_id": "setoranhafalan",
+    "storage_bucket": "setoranhafalan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241082385996:android:b31a8280fb15ada8",
+        "android_client_info": {
+          "package_name": "com.example.setoranhafalan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241082385996-9apu28ff2ctdaoascudb0fvpn2plrmb7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.setoranhafalan",
+            "certificate_hash": "5006235faf9e04b322157c13e19f8082139db58d"
+          }
+        },
+        {
+          "client_id": "241082385996-1gv3ndcmcrb68mm8t6u7gj5i5ohme7d3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.setoranhafalan",
+            "certificate_hash": "4fd4e4221550c3797e33b5117fdaef28535901fc"
+          }
+        },
+        {
+          "client_id": "241082385996-o755b2eloaukh1mafskfh6egti2sb7lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWiEaeM4xdj0QwhbH60F3Li8fYvBBHhxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241082385996-o755b2eloaukh1mafskfh6egti2sb7lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241082385996:android:7d89d4d419c368f9",
+        "android_client_info": {
+          "package_name": "project.setoranhafalan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241082385996-aoqlnrcmrhq0v4c84p6gihc9u1i4hut8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "project.setoranhafalan",
+            "certificate_hash": "4fd4e4221550c3797e33b5117fdaef28535901fc"
+          }
+        },
+        {
+          "client_id": "241082385996-o755b2eloaukh1mafskfh6egti2sb7lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWiEaeM4xdj0QwhbH60F3Li8fYvBBHhxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241082385996-o755b2eloaukh1mafskfh6egti2sb7lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

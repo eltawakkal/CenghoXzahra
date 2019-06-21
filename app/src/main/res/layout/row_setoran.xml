@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    
+    <RelativeLayout
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_height="71dp">
+        
+        <ImageView
+            android:src="@drawable/circle_primary"
+            android:layout_centerInParent="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <View
+            android:background="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_width="3dp"
+            android:layout_height="30dp"/>
+
+        <View
+            android:id="@+id/view_line_btm_setoran"
+            android:background="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="3dp"
+            android:layout_height="30dp"/>
+        
+    </RelativeLayout>
+    
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_tgl_row_setoran"
+                android:text="12, Feb 2019"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_surah_row_setoran"
+                    android:text="Al Fatihah"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_ayah_row_setoran"
+                    android:text="1 - 7"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_user_row_user"
+        android:src="@drawable/user"
+        android:layout_margin="10dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp" />
+
+    <LinearLayout
+        android:paddingRight="10dp"
+        android:layout_toRightOf="@id/img_user_row_user"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_absen_row_user"
+                android:text="No Absen 8293403"
+                android:textSize="11sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_kelas_row_user"
+                android:text="Kelas"
+                android:textSize="11sp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_nama_row_user"
+            android:text="Cengho Love Zahra"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</RelativeLayout>
