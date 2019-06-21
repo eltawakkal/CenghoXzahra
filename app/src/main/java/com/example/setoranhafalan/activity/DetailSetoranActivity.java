@@ -8,6 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class DetailSetoranActivity extends AppCompatActivity {
     private List<Setoran> listSetoran;
     private AlertDialog.Builder alertDialog;
     private Dialog dialog;
+    private MySharedPref myPref;
 
 //    Variables
     private String id;
@@ -99,19 +101,24 @@ public class DetailSetoranActivity extends AppCompatActivity {
     }
 
     private void shareDataSetoran() {
-        textForShare += "List Setoran Hafalan AKhi " + nama + "\n\n";
+        if (listSetoran.size() == 0) {
+            showMessage("Belum ada data setoran");
+        } else {
+            textForShare = "";
+            textForShare += "List Setoran Hafalan Akhi " + nama + "\n\n";
 
-        for (Setoran setoran : listSetoran) {
-            textForShare += "[" + setoran.getTgl() + "]\n" + "Surah : " + setoran.getSurah() + "\nAyat : " + setoran.getAyat() + "\n\n";
+            for (Setoran setoran : listSetoran) {
+                textForShare += "[" + setoran.getTgl() + "]\n" + "Surah : " + setoran.getSurah() + "\nAyat : " + setoran.getAyat() + "\n\n";
+            }
+
+            textForShare += "Di share melalui aplikasi *Setoran Hafalan Cengho*";
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Rekap Laporan Akhi " + nama);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, textForShare);
+            startActivity(Intent.createChooser(sharingIntent, "Bagikan Rekap Setoran"));
         }
-
-        textForShare += "Di share melalui aplikasi *Setoran Hafalan Cengho*";
-
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Rekap Laporan Akhi " + nama);
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, textForShare);
-        startActivity(Intent.createChooser(sharingIntent, "Bagikan Rekap Setoran"));
     }
 
     @Override
@@ -148,6 +155,7 @@ public class DetailSetoranActivity extends AppCompatActivity {
         recSetoran.setAdapter(adapter);
     }
 
+    @SuppressLint("RestrictedApi")
     private void initView() {
         refSetoran = FirebaseDatabase.getInstance().getReference("setoran");
 
@@ -164,6 +172,13 @@ public class DetailSetoranActivity extends AppCompatActivity {
         setTitle(nama);
 
         listSetoran = new ArrayList<>();
+        myPref = new MySharedPref(this);
+
+        if (myPref.getId() == null) {
+            fabAddSetoran.setVisibility(View.GONE);
+        } else {
+            fabAddSetoran.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showMessage(String message) {
@@ -208,6 +223,7 @@ public class DetailSetoranActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 showMessage("Setoran Berhasil Ditamn");
+                                dialog.dismiss();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

@@ -81,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
         mnuLogout = menu.findItem(R.id.action_logout);
         mnuLogin = menu.findItem(R.id.action_login);
 
-//        if (myPref.getId() == null) {
-//            fabAddUser.setVisibility(View.INVISIBLE);
-//            mnuLogout.setVisible(false);
-//        } else {
-//            mnuLogin.setVisible(false);
-//        }
+        if (myPref.getId() == null) {
+            fabAddUser.setVisibility(View.INVISIBLE);
+            mnuLogout.setVisible(false);
+        } else {
+            mnuLogin.setVisible(false);
+        }
 
         return true;
     }
@@ -101,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_login:
-//                gotoLoginActivity();
-                startActivity(new Intent(this, DetailSetoranActivity.class));
+                gotoLoginActivity();
                 break;
         }
 
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        refSantri.addListenerForSingleValueEvent(new ValueEventListener() {
+        refSantri.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listSantri.clear();
@@ -197,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 showMessage("Data Santri Ditambahkan");
+                                dialog.dismiss();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
