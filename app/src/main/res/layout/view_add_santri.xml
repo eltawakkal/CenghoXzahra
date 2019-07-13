@@ -8,20 +8,14 @@
     android:padding="10dp">
 
     <ImageView
-        android:src="@drawable/ic_close_white_24dp"
-        android:layout_gravity="right"
-        android:padding="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
         android:src="@drawable/user"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:layout_width="90dp"
         android:layout_height="90dp" />
 
     <TextView
-        android:text="Tamabah Data Santri"
+        android:text="Data Santri"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:textColor="@color/colorWhite"

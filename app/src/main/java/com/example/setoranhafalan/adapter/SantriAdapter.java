@@ -1,5 +1,6 @@
 package com.example.setoranhafalan.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,9 +21,9 @@ import java.util.List;
 public class SantriAdapter extends RecyclerView.Adapter<SantriAdapter.SantriViewHolder> {
 
     private List<Santri> listSantri;
-    private Context context;
+    private Activity context;
 
-    public SantriAdapter(List<Santri> listSantri, Context context) {
+    public SantriAdapter(List<Santri> listSantri, Activity context) {
         this.listSantri = listSantri;
         this.context = context;
     }
@@ -47,6 +48,8 @@ public class SantriAdapter extends RecyclerView.Adapter<SantriAdapter.SantriView
                 Intent intent = new Intent(context, DetailSetoranActivity.class);
                 intent.putExtra(MySharedPref.ID_KEY, listSantri.get(position).getId());
                 intent.putExtra(MySharedPref.NAMA_KEY, listSantri.get(position).getNama());
+                intent.putExtra(MySharedPref.KELAS_KEY, listSantri.get(position).getKelas());
+                intent.putExtra(MySharedPref.ABSEN_KEY, listSantri.get(position).getAbsen());
 
                 context.startActivity(intent);
             }
@@ -77,5 +80,11 @@ public class SantriAdapter extends RecyclerView.Adapter<SantriAdapter.SantriView
             tvKelas.setText(santri.getKelas());
             tvNama.setText(santri.getNama());
         }
+    }
+
+    public void updateData(List<Santri> newListSantri) {
+        this.listSantri = newListSantri;
+
+        notifyDataSetChanged();
     }
 }

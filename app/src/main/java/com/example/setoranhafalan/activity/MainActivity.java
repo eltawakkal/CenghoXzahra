@@ -3,6 +3,7 @@ package com.example.setoranhafalan.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout rlMain;
     private AlertDialog.Builder alertDialog;
     private Dialog dialog;
+    private SearchView srcSantri;
+
+    private EditText edtNama;
+    private EditText edtKelas;
+    private EditText edtAbsen;
 
 //    object
     private SantriAdapter adapter;
@@ -69,6 +75,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDialogAddSantri();
+            }
+        });
+
+        srcSantri.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                searchSantri(s);
+
+                return false;
+            }
+        });
+
+        srcSantri.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                getAllSantri();
+                return false;
             }
         });
     }
@@ -113,10 +142,20 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    void searchSantri(String name) {
 
+        List<Santri> newListSantri = new ArrayList<>();
+
+        for (Santri santri : listSantri) {
+            if (santri.getNama().toLowerCase().contains(name)) {
+                newListSantri.add(santri);
+            }
+        }
+
+        adapter.updateData(newListSantri);
+    }
+
+    void getAllSantri() {
         refSantri.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -139,6 +178,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getAllSantri();
+    }
+
     private void setupRecycleritems() {
         adapter = new SantriAdapter(listSantri, this);
 
@@ -153,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
         recSantri = findViewById(R.id.rec_list_santri);
         fabAddUser = findViewById(R.id.fab_add_user);
         rlMain = findViewById(R.id.rl_nain);
+        srcSantri = findViewById(R.id.search_main);
 
         listSantri = new ArrayList<>();
         myPref = new MySharedPref(this);
@@ -169,9 +216,9 @@ public class MainActivity extends AppCompatActivity {
         View viewAddSantri = LayoutInflater.from(this)
                 .inflate(R.layout.view_add_santri, null);
 
-        final EditText edtNama = viewAddSantri.findViewById(R.id.edt_nama_view_santri);
-        final EditText edtKelas = viewAddSantri.findViewById(R.id.edt_kelas_view_santri);
-        final EditText edtAbsen = viewAddSantri.findViewById(R.id.edt_absen_view_santri);
+        edtNama = viewAddSantri.findViewById(R.id.edt_nama_view_santri);
+        edtKelas = viewAddSantri.findViewById(R.id.edt_kelas_view_santri);
+        edtAbsen = viewAddSantri.findViewById(R.id.edt_absen_view_santri);
         MaterialButton mbtAddSantri = viewAddSantri.findViewById(R.id.mbt_add_santri);
 
         alertDialog = new AlertDialog.Builder(this);

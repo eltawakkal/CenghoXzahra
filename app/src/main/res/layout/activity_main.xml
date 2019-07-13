@@ -16,13 +16,36 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_list_santri"
+    <ScrollView
         android:layout_below="@id/toolbar_list_santri"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_main"
+                android:layout_margin="10dp"
+                android:background="@drawable/edt_rounded_bg"
+                app:queryBackground="@drawable/edt_rounded_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </androidx.appcompat.widget.SearchView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rec_list_santri"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_user"

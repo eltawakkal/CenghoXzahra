@@ -8,5 +8,28 @@
         android:icon="@drawable/ic_share_white_24dp"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/action_edit"
+        android:title=""
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        app:showAsAction="always">
+
+        <menu>
+
+            <item
+                android:id="@+id/action_udpdate_santri"
+                android:title="Update Data Santri"
+                android:icon="@drawable/ic_create_white_24dp"
+                app:showAsAction="always"/>
+
+            <item
+                android:id="@+id/actionn_delete_santri"
+                android:title="Hapus Data Santri"
+                android:icon="@drawable/ic_delete_white_24dp"
+                app:showAsAction="always"/>
+
+        </menu>
+
+    </item>
 
 </menu>

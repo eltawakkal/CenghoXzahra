@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,13 +19,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.setoranhafalan.R;
 import com.example.setoranhafalan.adapter.SetoranAdapter;
 import com.example.setoranhafalan.helper.MySharedPref;
+import com.example.setoranhafalan.models.Santri;
 import com.example.setoranhafalan.models.Setoran;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -44,12 +48,18 @@ public class DetailSetoranActivity extends AppCompatActivity {
 
 //    firebase
     private DatabaseReference refSetoran;
+    private DatabaseReference refSantri;
 
 //    Views
     private RecyclerView recSetoran;
     private FloatingActionButton fabAddSetoran;
     private CoordinatorLayout clMain;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
+
+    private EditText edtNama;
+    private EditText edtKelas;
+    private EditText edtAbsen;
 
 //    Objects
     private SetoranAdapter adapter;
@@ -61,6 +71,8 @@ public class DetailSetoranActivity extends AppCompatActivity {
 //    Variables
     private String id;
     private String nama;
+    private String kelas;
+    private String absen;
     private String textForShare = "";
 
     @Override
@@ -91,10 +103,11 @@ public class DetailSetoranActivity extends AppCompatActivity {
             case R.id.actionn_share_setorann:
                 shareDataSetoran();
                 break;
-            case R.id.home:
-                showMessage("Oke");
-                finish();
+            case R.id.action_udpdate_santri:
+                showDialogEditSantri(nama, kelas, absen);
                 break;
+            case R.id.actionn_delete_santri:
+                showDeleteDialog(nama);
         }
 
         return true;
@@ -158,18 +171,28 @@ public class DetailSetoranActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     private void initView() {
         refSetoran = FirebaseDatabase.getInstance().getReference("setoran");
+        refSantri = FirebaseDatabase.getInstance().getReference("santri");
 
-        nama = getIntent().getStringExtra(MySharedPref.NAMA_KEY);
         id = getIntent().getStringExtra(MySharedPref.ID_KEY);
+        nama = getIntent().getStringExtra(MySharedPref.NAMA_KEY);
+        kelas = getIntent().getStringExtra(MySharedPref.KELAS_KEY);
+        absen = getIntent().getStringExtra(MySharedPref.ABSEN_KEY);
 
         recSetoran = findViewById(R.id.rec_setoran);
         fabAddSetoran = findViewById(R.id.fab_add_setoran);
         clMain = findViewById(R.id.setoran_view);
         toolbar = findViewById(R.id.toolbar_setoran);
+        collapsingToolbarLayout = findViewById(R.id.collaps_setoran);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(nama);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         listSetoran = new ArrayList<>();
         myPref = new MySharedPref(this);
@@ -223,6 +246,77 @@ public class DetailSetoranActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 showMessage("Setoran Berhasil Ditamn");
+                                dialog.dismiss();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                showMessage("Error: " + e.toString());
+                            }
+                        });
+            }
+        });
+    }
+
+    void showDeleteDialog(String name) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog
+                .setTitle("Hapus Data")
+                .setMessage("Apakah data ananda " + name + " Akan Dihapus?")
+                .setPositiveButton("Hapus", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        refSantri.child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(DetailSetoranActivity.this, "Data Terhapus", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+                    }
+                }).setNegativeButton("Tidak", null)
+                .create().show();
+    }
+
+    void showDialogEditSantri(final String name, String kelas, String absen) {
+
+        View viewAddSantri = LayoutInflater.from(this)
+                .inflate(R.layout.view_add_santri, null);
+
+        edtNama = viewAddSantri.findViewById(R.id.edt_nama_view_santri);
+        edtKelas = viewAddSantri.findViewById(R.id.edt_kelas_view_santri);
+        edtAbsen = viewAddSantri.findViewById(R.id.edt_absen_view_santri);
+
+        edtNama.setText(name);
+        edtKelas.setText(kelas);
+        edtAbsen.setText(absen);
+
+        MaterialButton mbtAddSantri = viewAddSantri.findViewById(R.id.mbt_add_santri);
+        mbtAddSantri.setText("Udpate Data Santri");
+
+        alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setView(viewAddSantri);
+
+        dialog = alertDialog.create();
+        dialog.show();
+
+        mbtAddSantri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final String nama =  edtNama.getText().toString();
+                String kelas = edtKelas.getText().toString();
+                String absen = edtAbsen.getText().toString();
+
+                Santri santri = new Santri(nama, kelas, absen, null, null);
+
+                refSantri.child(id).setValue(santri)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                showMessage("Data Santri Diupdate");
+                                collapsingToolbarLayout.setTitle(nama);
                                 dialog.dismiss();
                             }
                         })
