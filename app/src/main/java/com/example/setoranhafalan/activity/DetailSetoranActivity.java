@@ -56,6 +56,7 @@ public class DetailSetoranActivity extends AppCompatActivity {
     private CoordinatorLayout clMain;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
+    private MenuItem menuEdit;
 
     private EditText edtNama;
     private EditText edtKelas;
@@ -93,6 +94,14 @@ public class DetailSetoranActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_setoran, menu);
+
+        menuEdit = menu.findItem(R.id.action_edit);
+
+        if (myPref.getId() == null) {
+            menuEdit.setVisible(false);
+        } else {
+            menuEdit.setVisible(true);
+        }
 
         return true;
     }
@@ -209,9 +218,6 @@ public class DetailSetoranActivity extends AppCompatActivity {
     }
 
     void showDialogAddSetoran() {
-
-        //TODO initialize all the obejects
-
         View viewAddSetoran = LayoutInflater.from(this)
                 .inflate(R.layout.view_add_setorani, null);
 
