@@ -1,105 +1,54 @@
 package com.example.setoranhafalan.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-
 import com.example.setoranhafalan.R;
-import com.example.setoranhafalan.adapter.SantriAdapter;
+import com.example.setoranhafalan.fragments.FragAdmin;
+import com.example.setoranhafalan.fragments.FragGuest;
 import com.example.setoranhafalan.helper.MySharedPref;
-import com.example.setoranhafalan.models.Santri;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-//    firebase
-    private DatabaseReference refSantri;
-
-//    Views
-    private Toolbar toolbar;
-    private RecyclerView recSantri;
-    private FloatingActionButton fabAddUser;
-    private RelativeLayout rlMain;
-    private AlertDialog.Builder alertDialog;
-    private Dialog dialog;
-    private SearchView srcSantri;
-
-    private EditText edtNama;
-    private EditText edtKelas;
-    private EditText edtAbsen;
-
-//    object
-    private SantriAdapter adapter;
-    private List<Santri> listSantri;
+    //object
     private MySharedPref myPref;
 
-//    itemMenu
+    //itemMenu
     private MenuItem mnuLogout;
     private MenuItem mnuLogin;
+
+//    fragments
+    private FragAdmin fragAdmin;
+    private FragGuest fragGuest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        initview();
 
-        fabAddUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDialogAddSantri();
-            }
-        });
+        if (myPref.getId() == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container_main, fragGuest).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container_main, fragAdmin).commit();
+        }
+    }
 
-        srcSantri.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
+    private void initview() {
+        fragAdmin = new FragAdmin();
+        fragGuest = new FragGuest();
 
-                return false;
-            }
+        Toolbar toolbar = findViewById(R.id.toolbar_list_santri);
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                searchSantri(s);
+        setSupportActionBar(toolbar);
 
-                return false;
-            }
-        });
-
-        srcSantri.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                getAllSantri();
-                return false;
-            }
-        });
+        myPref = new MySharedPref(this);
     }
 
     @SuppressLint("RestrictedApi")
@@ -111,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mnuLogin = menu.findItem(R.id.action_login);
 
         if (myPref.getId() == null) {
-            fabAddUser.setVisibility(View.INVISIBLE);
             mnuLogout.setVisible(false);
         } else {
             mnuLogin.setVisible(false);
@@ -133,126 +81,11 @@ public class MainActivity extends AppCompatActivity {
                 gotoLoginActivity();
                 break;
         }
-
         return true;
     }
 
     private void gotoLoginActivity() {
         startActivity(new Intent(this, LoginActivity.class));
         finish();
-    }
-
-    void searchSantri(String name) {
-
-        List<Santri> newListSantri = new ArrayList<>();
-
-        for (Santri santri : listSantri) {
-            if (santri.getNama().toLowerCase().contains(name)) {
-                newListSantri.add(santri);
-            }
-        }
-
-        adapter.updateData(newListSantri);
-    }
-
-    void getAllSantri() {
-        refSantri.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listSantri.clear();
-
-                for (DataSnapshot snapSantri : dataSnapshot.getChildren()) {
-                    Santri santri = snapSantri.getValue(Santri.class);
-                    santri.setId(snapSantri.getKey());
-
-                    listSantri.add(santri);
-                }
-
-                setupRecycleritems();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                showMessage("Error: " + databaseError.getDetails());
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        getAllSantri();
-    }
-
-    private void setupRecycleritems() {
-        adapter = new SantriAdapter(listSantri, this);
-
-        recSantri.setLayoutManager(new LinearLayoutManager(this));
-        recSantri.setAdapter(adapter);
-    }
-
-    private void initView() {
-        refSantri = FirebaseDatabase.getInstance().getReference("santri");
-
-        toolbar = findViewById(R.id.toolbar_list_santri);
-        recSantri = findViewById(R.id.rec_list_santri);
-        fabAddUser = findViewById(R.id.fab_add_user);
-        rlMain = findViewById(R.id.rl_nain);
-        srcSantri = findViewById(R.id.search_main);
-
-        listSantri = new ArrayList<>();
-        myPref = new MySharedPref(this);
-
-        setSupportActionBar(toolbar);
-    }
-
-    private void showMessage(String message) {
-        Snackbar.make(rlMain, message, Snackbar.LENGTH_SHORT).show();
-    }
-
-    void showDialogAddSantri() {
-
-        View viewAddSantri = LayoutInflater.from(this)
-                .inflate(R.layout.view_add_santri, null);
-
-        edtNama = viewAddSantri.findViewById(R.id.edt_nama_view_santri);
-        edtKelas = viewAddSantri.findViewById(R.id.edt_kelas_view_santri);
-        edtAbsen = viewAddSantri.findViewById(R.id.edt_absen_view_santri);
-        MaterialButton mbtAddSantri = viewAddSantri.findViewById(R.id.mbt_add_santri);
-
-        alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setView(viewAddSantri);
-
-        dialog = alertDialog.create();
-        dialog.show();
-
-        mbtAddSantri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = refSantri.push().getKey();
-
-                String nama =  edtNama.getText().toString();
-                String kelas = edtKelas.getText().toString();
-                String absen = edtAbsen.getText().toString();
-
-                Santri santri = new Santri(nama, kelas, absen, null, null);
-
-                refSantri.child(id).setValue(santri)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                showMessage("Data Santri Ditambahkan");
-                                dialog.dismiss();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                showMessage("Error: " + e.toString());
-                            }
-                        });
-            }
-        });
     }
 }
